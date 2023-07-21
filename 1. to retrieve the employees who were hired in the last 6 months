@@ -1,0 +1,24 @@
+
+1. Write an SQL query to retrieve the employees who were hired in the last 6 months
+
+CREATE TABLE Employees (
+  EmployeeID INT PRIMARY KEY,
+  Name VARCHAR(100),
+  HireDate DATE
+);
+
+
+INSERT INTO Employees (EmployeeID, Name, HireDate)
+VALUES
+  (1, 'John Smith', '2023-01-15'),
+  (2, 'Jane Doe', '2023-03-20'),
+  (3, 'Michael Lee', '2023-04-10'),
+  (4, 'Sarah Johnson', '2023-05-05'),
+  (5, 'David Williams', '2023-06-12'),
+  (6, 'Emily Brown', '2023-07-01');
+
+
+
+  SELECT EmployeeID, Name
+  FROM Employees
+  WHERE HireDate >= DATEADD(MONTH,-6,GETDATE())
