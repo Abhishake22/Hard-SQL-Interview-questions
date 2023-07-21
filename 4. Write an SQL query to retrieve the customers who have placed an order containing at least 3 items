@@ -1,0 +1,71 @@
+
+4. Scenario: There are three tables, "Customers," "Orders," and "OrderItems." .
+
+CREATE TABLE Customers (
+  CustomerID INT PRIMARY KEY,
+  CustomerName VARCHAR(100)
+);
+
+
+CREATE TABLE Orders (
+  OrderID INT PRIMARY KEY,
+  CustomerID INT,
+  OrderDate DATE,
+  -- Add other relevant order-related columns here
+  FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
+);
+
+
+CREATE TABLE OrderItems (
+  OrderItemID INT PRIMARY KEY,
+  OrderID INT,
+  ItemName VARCHAR(100),
+  Quantity INT,
+  Price DECIMAL(10, 2),
+  -- Add other relevant order item-related columns here
+  FOREIGN KEY (OrderID) REFERENCES Orders(OrderID)
+);
+
+
+INSERT INTO Customers (CustomerID, CustomerName)
+VALUES
+  (1, 'John Smith'),
+  (2, 'Jane Doe'),
+  (3, 'Michael Lee'),
+  (4, 'Sarah Johnson');
+
+
+INSERT INTO Orders (OrderID, CustomerID, OrderDate)
+VALUES
+  (101, 1, '2023-01-15'),
+  (102, 2, '2023-02-20'),
+  (103, 3, '2023-03-10'),
+  (104, 1, '2023-04-05'),
+  (105, 2, '2023-05-12'),
+  (106, 4, '2023-06-01');
+
+
+INSERT INTO OrderItems (OrderItemID, OrderID, ItemName, Quantity, Price)
+VALUES
+  (1001, 101, 'Item A', 2, 10.00),
+  (1002, 101, 'Item B', 1, 15.00),
+  (1003, 101, 'Item C', 3, 5.00),
+  (1004, 102, 'Item X', 2, 8.00),
+  (1005, 102, 'Item Y', 2, 6.00),
+  (1006, 103, 'Item P', 4, 7.50),
+  (1007, 104, 'Item M', 1, 12.00),
+  (1008, 104, 'Item N', 2, 9.00),
+  (1009, 104, 'Item O', 1, 11.00),
+  (1010, 105, 'Item Z', 3, 4.00);
+
+
+Write an SQL query to retrieve the customers who have placed an order containing at least 3 items
+
+Query:
+
+SELECT DISTINCT C.CustomerID, C.CustomerName
+FROM Customers AS C
+JOIN Orders AS O ON C.CustomerID = O.CustomerID
+JOIN OrderItems AS OI ON O.OrderID = OI.OrderID
+GROUP BY C.CustomerID, C.CustomerName
+HAVING COUNT(DISTINCT OI.OrderItemID) >= 3;
