@@ -1,0 +1,45 @@
+-- Customers Table
+INSERT INTO Customers (CustomerID, FirstName, LastName, Email, Address) VALUES
+(1, 'John', 'Doe', 'john.doe@example.com', '123 Main St'),
+(2, 'Alice', 'Smith', 'alice.smith@example.com', '456 Elm St');
+
+-- Products Table
+INSERT INTO Products (ProductID, ProductName, Category, UnitPrice) VALUES
+(101, 'Widget A', 'Gadgets', 10.99),
+(102, 'Widget B', 'Gadgets', 12.99),
+(103, 'Gadget C', 'Gadgets', 19.99),
+(201, 'Book X', 'Books', 8.50),
+(202, 'Book Y', 'Books', 12.50),
+(203, 'Book Z', 'Books', 14.99);
+
+-- Orders Table
+INSERT INTO Orders (OrderID, CustomerID, OrderDate) VALUES
+(1001, 1, '2023-07-15'),
+(1002, 2, '2023-07-20');
+
+-- OrderItems Table
+INSERT INTO OrderItems (OrderItemID, OrderID, ProductID, Quantity) VALUES
+(2001, 1001, 101, 2),
+(2002, 1001, 103, 1),
+(2003, 1002, 102, 3),
+(2004, 1002, 201, 4),
+(2005, 1002, 203, 2);
+
+
+Retrieve the customer who has made the highest purchase on each category 
+
+
+WITH CTE AS (
+SELECT c.customerid,c.Firstname,p.category,SUM(p.unitprice * oi.quantity) as totalpurchase,ROW_NUMBER() OVER (PARTITION BY p.category order by SUM(p.unitprice * oi.quantity)desc) as rn
+FROM customers c
+JOIN orders o
+ON c.customerid = o.customerid
+JOIN orderitems oi
+ON o.orderid = oi.orderid
+JOIN products p
+ON oi.productid = p.productid
+GROUP BY c.customerid,c.Firstname,p.category
+)
+SELECT customerid,firstname,category,totalpurchase
+FROM CTE
+WHERE rn = 1
