@@ -1,0 +1,32 @@
+Scenario: Removing Duplicate Product Records
+
+Situation: You are a database administrator for an online retail company, and you've discovered that there are duplicate product records in the "Products" table. Each product is identified by a unique ProductID, but some products have been mistakenly entered multiple times with the same ProductID. Your task is to remove the duplicate product records from the table.
+
+Table: Products
+
+ProductID	ProductName	Category	Price
+1	Smartphone	Electronics	500
+2	Laptop	Electronics	1000
+3	Headphones	Electronics	50
+4	Smartwatch	Electronics	200
+5	Tablet	Electronics	300
+6	Laptop	Electronics	1000
+7	Headphones	Electronics	50
+
+
+Question 1: Write an SQL query to identify the duplicate product records based on the ProductName and Category.
+
+SELECT ProductName,category,COUNT(*) AS Number_of_duplicated_records
+FROM products
+GROUP BY productname,category
+HAVING COUNT(*) > 1
+
+Question 2: Write an SQL query to remove the duplicate product records, keeping only one occurrence of each product with the same ProductName and Category.
+
+
+DELETE FROM products
+WHERE productID IN (
+SELECT MAX(ProductID)
+FROM products
+GROUP BY ProductName,Category
+HAVING COUNT(*) > 1)
