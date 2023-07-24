@@ -1,0 +1,27 @@
+
+Situation: You are a database administrator for an e-commerce company, and you've noticed that there might be duplicate customer records in the "Customers" table. 
+Your task is to identify and retrieve all the duplicate customer records based on their email addresses.
+
+Table: Customers
+
+CustomerID	FirstName	LastName	Email	Phone
+1	John	Smith	john.smith@example.com	555-1234
+2	Jane	Doe	jane.doe@example.com	555-5678
+3	Mike	Johnson	mike.johnson@example.com	555-9876
+4	Sarah	Lee	sarah.lee@example.com	555-5432
+5	Emily	Brown	emily.brown@example.com	555-7890
+6	John	Smith	john.smith@example.com	555-1111
+7	Mark	Davis	mark.davis@example.com	555-2222
+
+
+SELECT FirstName,LastName,Email,count(*) AS Number_of_times
+FROM customers
+GROUP BY FirstName,LastName,Email
+HAVING COUNT(*) > 1
+
+Output:
+
+FirstName	LastName	Email	Number_of_times
+John	Smith	john.smith@example.com	2
+
+
