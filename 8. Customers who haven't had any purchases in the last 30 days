@@ -1,0 +1,22 @@
+Table - Customers
+
+CustomerID	FirstName	LastName	Gender	Age	RegistrationDate	LastPurchaseDate	TotalSpent
+1	John	Smith	Male	30	2023-01-15	2023-07-20	500
+2	Jane	Doe	Female	25	2023-02-10	2023-07-18	750
+3	Mike	Johnson	Male	22	2023-03-05	2023-07-19	300
+4	Sarah	Lee	Female	28	2023-04-12	2023-07-21	1000
+5	Emily	Brown	Female	35	2023-05-20	2023-07-22	200
+6	David	Williams	Male	40	2023-06-02	2023-07-20	800
+7	Lisa	Miller	Female	29	2023-07-10	2023-07-19	400
+8	steve	smith	Male	32	2023-04-07	2023-06-22	650
+9	brian	ted	Male	34	2023-05-09	2023-06-10	300
+
+
+Query:
+
+Find the customers who haven't made a purchase in the last 30 days
+
+SELECT CustomerID,FirstName
+FROM customers
+WHERE LastPurchaseDate <= DATEADD(DAY,-30,GETDATE())
+
