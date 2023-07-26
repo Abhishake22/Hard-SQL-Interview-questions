@@ -1,0 +1,21 @@
+Table:
+
+transaction_id	customer_id	transaction_date
+1	101	2023-07-20
+2	102	2023-07-15
+3	101	2023-07-10
+4	103	2023-07-12
+5	102	2023-07-05
+6	101	2023-06-28
+7	103	2023-06-30
+8	101	2023-06-25
+
+
+SELECT customer_id,DATEDIFF(DAY,prev_transaction_date,latest_transaction_date) AS Days_difference
+FROM 
+(SELECT customer_id,transaction_date as latest_transaction_date,
+LAG(transaction_date) OVER (PARTITION BY customer_id ORDER BY transaction_date) AS Prev_transaction_date,
+ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY transaction_date desc) AS rn
+FROM transactions
+)A
+WHERE rn = 1
