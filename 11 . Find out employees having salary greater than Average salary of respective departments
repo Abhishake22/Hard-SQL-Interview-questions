@@ -1,0 +1,41 @@
+
+Table:
+
+EmployeeID	EmployeeName	Salary	DepartmentID
+1	John	50000	101
+2	Jane	55000	102
+3	Mike	60000	101
+4	Lisa	52000	103
+5	Sarah	58000	101
+6	Mark	53000	102
+7	Mary	61000	103
+8	Tom	56000	101
+9	Alice	54000	102
+
+Query :
+
+find out employees having salaries greater than the average salary of respective departments
+
+SELECT EmployeeID,Employeename,salary,departmentID
+FROM
+(SELECT EmployeeID,Employeename,Salary,DepartmentID,AVG(Salary) OVER (PARTITION BY DepartmentID) AS Average_Salary
+from Employees) A
+WHERE salary > Average_salary
+
+
+or
+
+
+
+SELECT e.EmployeeID, e.EmployeeName, e.Salary, e.DepartmentID
+FROM Employees e
+WHERE e.Salary > (
+    SELECT AVG(Salary) AS AvgSalary
+    FROM Employees
+    WHERE DepartmentID = e.DepartmentID
+
+
+
+
+
+
