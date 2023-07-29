@@ -1,0 +1,24 @@
+Table: Orders
+
+
+| order_id | customer_id | order_date   | order_amount |
+|----------|-------------|--------------|--------------|
+| 1        | 101         | 2023-07-24   | 150.00       |
+| 2        | 102         | 2023-07-25   | 200.00       |
+| 3        | 103         | 2023-07-26   | 75.00        |
+| 4        | 104         | 2023-07-27   | 300.00       |
+| 5        | 105         | 2023-07-28   | 100.00       |
+| 6        | 106         | 2023-07-29   | 50.00        |
+| 7        | 107         | 2023-07-30   | 120.00       |
+
+
+
+-- Find orders that are placed on weekdays
+
+SELECT * FROM orders
+WHERE DATEPART(WEEKDAY,order_date) IN (2,3,4,5,6)
+
+or
+
+SELECT * FROM orders
+WHERE DATEPART(WEEKDAY, order_date) BETWEEN 2 AND 6;
