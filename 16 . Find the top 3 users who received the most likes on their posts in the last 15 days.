@@ -1,0 +1,49 @@
+CREATE TABLE Users (
+    UserID INT PRIMARY KEY,
+    UserName VARCHAR(50) NOT NULL
+);
+
+INSERT INTO Users (UserID, UserName) VALUES
+(1, 'John'),
+(2, 'Jane'),
+(3, 'Alice'),
+(4, 'Bob'),
+(5, 'Emily');
+
+
+CREATE TABLE Posts (
+    PostID INT PRIMARY KEY,
+    UserID INT,
+    PostDate DATE,
+    Likes INT,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID)
+);
+
+INSERT INTO Posts (PostID, UserID, PostDate, Likes) VALUES
+(1, 1, '2023-07-01', 20),
+(2, 2, '2023-07-05', 15),
+(3, 3, '2023-07-10', 10),
+(4, 4, '2023-07-15', 25),
+(5, 5, '2023-07-20', 30),
+(6, 1, '2023-07-25', 40),
+(7, 2, '2023-07-27', 5),
+(8, 3, '2023-07-29', 35),
+(9, 4, '2023-07-30', 18),
+(10, 5, '2023-07-31', 22);
+
+
+--Write a query to find the top 3 users who received the most likes on their posts in the last 15 days
+--Output: UserID | UserName | TotalLikes
+
+
+SELECT TOP 3 u.UserID,username,SUM(likes) as Total_likes
+FROM Users u
+JOIN Posts p
+ON u.UserID = p.UserID
+WHERE p.PostDate >= DATEADD(DAY,-15,GETDATE())
+GROUP BY u.UserID, UserName
+ORDER BY Total_likes desc
+
+
+
+
