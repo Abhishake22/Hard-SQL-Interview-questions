@@ -1,0 +1,30 @@
+Table: Sales
+
+SaleID	SaleDate	SaleAmount	RegionID
+1	2023-01-10	1000	1
+2	2023-02-15	1200	1
+3	2023-03-20	800	2
+4	2023-04-05	1500	2
+5	2023-05-12	1800	1
+6	2023-06-25	1600	2
+7	2023-07-03	1900	1
+8	2023-08-18	2100	2
+9	2023-09-09	2200	1
+10	2023-10-30	2000	2
+11	2023-11-05	2400	1
+12	2023-12-24	2600	2
+
+
+---Write a query to find the average sales amount for each quarter of the year, along with the percentage change from the previous quarter
+---Output: Quarter | AverageSaleAmount | Previous_Quarter_sale | Difference | PercentageChange
+
+WITH CTE AS (
+SELECT DATEPART(QUARTER,SaleDate) AS Quarter,AVG(SaleAmount) AS Averagesaleamount,LAG(AVG(Saleamount)) OVER (ORDER BY DATEPART(QUARTER,SaleDate)) as Previous_quarter_sale
+FROM Sales
+GROUP BY DATEPART(QUARTER,SaleDate)
+)
+SELECT Quarter,Averagesaleamount,previous_quarter_sale,Averagesaleamount - previous_quarter_sale as difference,(Averagesaleamount - previous_quarter_sale) * 100 / previous_quarter_sale AS Percentagechange
+FROM CTE
+
+
+
