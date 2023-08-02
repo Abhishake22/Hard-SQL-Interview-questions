@@ -1,0 +1,25 @@
+Table:
+
+CREATE TABLE employees (
+    employee_id INT PRIMARY KEY,
+    employee_name VARCHAR(50),
+    salary DECIMAL(10, 2),
+    manager_id INT
+);
+
+INSERT INTO employees (employee_id, employee_name, salary, manager_id)
+VALUES
+    (1, 'John Doe', 50000.00, NULL),     -- John Doe is the top-level manager
+    (2, 'Alice Smith', 55000.00, 1),     -- Alice reports to John Doe
+    (3, 'Bob Johnson', 65000.00, 1),     -- Bob also reports to John Doe
+    (4, 'Mary Brown', 60000.00, 2),      -- Mary reports to Alice
+    (5, 'James Wilson', 70000.00, 3),    -- James reports to Bob
+    (6, 'Linda Adams', 52000.00, 3);     -- Linda also reports to Bob
+
+
+SELECT e1.employee_name,e1.salary,e2.salary
+from Employees e1
+JOIN Employees e2
+ON e1.manager_id = e2.employee_id
+WHERE e1.salary > e2.salary
+
