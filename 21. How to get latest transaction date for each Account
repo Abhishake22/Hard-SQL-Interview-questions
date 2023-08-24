@@ -1,0 +1,19 @@
+Table:
+
+Acc_num	txn_id	txn_time	balance
+1001	txn 1	23-08-2023	2000
+1001	txn 2	22-08-2023	1000
+1002	txn 3	21-08-2023	5000
+1001	txn 4	20-08-2023	3500
+1002	txn 5	19-08-2023	2900
+
+
+Query:
+
+WITH CTE AS (
+SELECT Acc_num,txn_id,txn_time,balance,ROW_NUMBER() OVER (PARTITION BY Acc_num order by txn_time desc) as rn
+FROM transactions
+)
+SELECT Acc_num,txn_id,txn_time,balance
+FROM CTE
+WHERE rn = 1
