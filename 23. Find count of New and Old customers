@@ -1,0 +1,43 @@
+Table:
+
+create table customer(custid int, qty int, order_date date);
+
+ 
+
+insert into customer values(100, 2, '12/01/2023');
+
+insert into customer values(101, 3, '12/01/2023');
+
+insert into customer values(102, 2, '12/01/2023');
+
+insert into customer values(100, 2, '13/01/2023');
+
+insert into customer values(105, 8, '13/01/2023');
+
+insert into customer values(106, 7, '13/01/2023');
+
+insert into customer values(102, 4, '14/01/2023');
+
+insert into customer values(101, 6, '14/01/2023');
+
+insert into customer values(108, 8, '14/01/2023');
+
+
+Find Count of New and old customers 
+
+WITH CTE AS (
+SELECT order_date as orderdate,custid,LAG(order_date) OVER (PARTITION BY custid ORDER BY order_date) as Prev_order_date
+FROM customers
+)
+SELECT orderdate,COUNT(DISTINCT CASE WHEN prev_order_date IS NULL THEN custid END) AS New_customer,
+COUNT(DISTINCT CASE WHEN prev_order_date IS NOT NULL THEN Custid END) AS old_customer
+FROM CTE
+GROUP BY orderdate
+
+
+Output:
+
+orderdate	    new_customer	old_customer
+2023-01-12	     3	              0
+2023-01-13	     2	              1
+2023-01-14	     1	              2
